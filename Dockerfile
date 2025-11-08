@@ -1,7 +1,4 @@
-FROM n8nio/n8n:latest
-
+FROM n8nio/n8n
 USER root
-RUN apk update && apk add --no-cache ffmpeg python3 py3-pip
+RUN apk add --no-cache python3 py3-pip ffmpeg
 USER node
-
-CMD ["n8n", "start"]
