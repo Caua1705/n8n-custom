@@ -1,14 +1,11 @@
 # Usa a imagem oficial do n8n
 FROM n8nio/n8n:latest
 
-# Troca para o usuário root para poder instalar pacotes
+# Troca para root pra poder instalar pacotes
 USER root
 
-# Atualiza e instala dependências necessárias para ffmpeg
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends ffmpeg && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# Instala o ffmpeg no Alpine (imagem base do n8n)
+RUN apk add --no-cache ffmpeg
 
 # Volta para o usuário padrão do n8n
 USER node
