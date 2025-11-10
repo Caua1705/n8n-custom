@@ -1,14 +1,17 @@
-# Usa a imagem base do n8n
-FROM n8nio/n8n:1.118.2
+# Usa Node como base (aqui dá pra usar apt)
+FROM node:20-slim
 
-# Permite instalar pacotes
-USER root
+# Instala ffmpeg
+RUN apt-get update && apt-get install -y ffmpeg && apt-get clean
 
-# Atualiza o apt e instala o ffmpeg
-RUN apt-get update && \
-    apt-get install -y ffmpeg && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# Instala n8n globalmente
+RUN npm install -g n8n
 
-# Retorna pro usuário padrão do n8n
-USER node
+# Cria pasta de dados
+RUN mkdir /root/.n8n
+
+# Expõe a porta padrão
+EXPOSE 5678
+
+# Comando de inicialização
+CMD ["n8n", "start"]
