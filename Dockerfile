@@ -1,17 +1,17 @@
 # Usa a imagem oficial do n8n
 FROM n8nio/n8n:latest
 
-# Troca pro root pra poder instalar pacotes
+# Troca para o usuário root para poder instalar pacotes
 USER root
 
-# Instala ffmpeg
-RUN apk update && apk add --no-cache ffmpeg
+# Atualiza e instala dependências necessárias para ffmpeg
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends ffmpeg && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# Corrige permissões e volta pro usuário node
-RUN chown -R node:node /home/node
-
+# Volta para o usuário padrão do n8n
 USER node
 
-# Define comando padrão de inicialização
-ENTRYPOINT ["tini", "--"]
+# Comando padrão para iniciar o n8n
 CMD ["n8n", "start"]
