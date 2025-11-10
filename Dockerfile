@@ -1,14 +1,11 @@
-# Usa explicitamente a imagem Alpine do n8n
-FROM n8nio/n8n:1.118.2
+# Usa a imagem Alpine — é a base correta pra apk funcionar
+FROM n8nio/n8n:1.118.2-alpine
 
-# Troca para o root pra instalar pacotes
+# Permite instalar pacotes
 USER root
 
-# Instala o ffmpeg no Alpine
-RUN apk update && apk add --no-cache ffmpeg
+# Instala o ffmpeg
+RUN apk add --no-cache ffmpeg
 
-# Volta pro usuário node
+# Retorna pro usuário padrão
 USER node
-
-# Garante que o comando n8n seja encontrado
-ENTRYPOINT ["tini", "--", "n8n"]
