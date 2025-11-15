@@ -1,9 +1,9 @@
 # Usa Node como base (tem apt-get)
 FROM node:20-slim
 
-# Instala ffmpeg, python3, build-essential e dependências do Kokoro
+# Instala ffmpeg, python3, pip3, build-essential e dependências do Kokoro
 RUN apt-get update && \
-    apt-get install -y ffmpeg python3 build-essential git && \
+    apt-get install -y ffmpeg python3 python3-pip build-essential git && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
