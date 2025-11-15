@@ -14,7 +14,7 @@ RUN npm install -g n8n@1.118.2
 RUN git clone https://github.com/hexgrad/kokoro /kokoro && \
     cd /kokoro && \
     python3 -m venv /kokoro/venv && \
-    /kokoro/venv/bin/pip install -r requirements.txt
+    /kokoro/venv/bin/pip install torch numpy scipy
 
 # Define o diretório de trabalho
 WORKDIR /data
