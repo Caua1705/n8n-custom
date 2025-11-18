@@ -18,3 +18,4 @@ EXPOSE 5678
 
 # Inicia o n8n
 CMD ["n8n", "start"]
+    
