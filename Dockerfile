@@ -3,7 +3,7 @@ FROM node:20-slim
 
 # Instala ffmpeg e dependências básicas
 RUN apt-get update && \
-    apt-get install -y ffmpeg python3 build-essential && \
+    apt-get install -y ffmpeg python3 build-essential bc && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
