@@ -1,20 +1,14 @@
-# Usa Node como base (tem apt-get)
-FROM node:20-slim
+# Usa a imagem oficial do n8n baseada em Alpine Linux (mais leve e comum)
+FROM n8nio/n8n:latest
 
-# Instala ffmpeg e dependências básicas
-RUN apt-get update && \
-apt-get install -y ffmpeg python3 build-essential bc && \
-apt-get clean && \
-rm -rf /var/lib/apt/lists/*
+# Muda para o usuário root para ter permissão de instalar programas
+USER root
 
-# Instala a versão específica do n8n
-RUN npm install -g n8n@1.118.2
+# Atualiza os repositórios e instala o FFmpeg
+RUN apk add --update --no-cache ffmpeg
 
-# Define o diretório de trabalho
-WORKDIR /data
+# (Opcional) Instala também yt-dlp ou python se você for precisar baixar vídeos
+# RUN apk add --no-cache python3 py3-pip
 
-# Expõe a porta do n8n
-EXPOSE 5678
-
-# Inicia o n8n
-CMD ["n8n", "start"]
+# Volta para o usuário padrão do n8n (importante para segurança e permissões do app)
+USER node
