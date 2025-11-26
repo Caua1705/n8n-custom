@@ -1,14 +1,21 @@
-# Usa a imagem oficial do n8n baseada em Alpine Linux (mais leve e comum)
+# Usa a imagem base do n8n
 FROM n8nio/n8n:latest
 
-# Muda para o usuário root para ter permissão de instalar programas
+# Muda para o usuário root para ter permissão de instalar/mover arquivos
 USER root
 
-# Atualiza os repositórios e instala o FFmpeg
-RUN apk add --update --no-cache ffmpeg
+# 1. Instala utilitários necessários para baixar e descompactar o binário
+RUN apk add --no-cache curl tar xz
 
-# (Opcional) Instala também yt-dlp ou python se você for precisar baixar vídeos
-# RUN apk add --no-cache python3 py3-pip
+# 2. Baixa a versão estática e autônoma do FFmpeg (amd64)
+# Esta versão não depende das bibliotecas do sistema (o que resolve o problema)
+RUN curl -L https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz -o /tmp/ffmpeg.tar.xz \
+    && tar -xf /tmp/ffmpeg.tar.xz -C /tmp/ \
+    && mv /tmp/ffmpeg-*-amd64-static/ffmpeg /usr/bin/ffmpeg \
+    && mv /tmp/ffmpeg-*-amd64-static/ffprobe /usr/bin/ffprobe \
+    && chmod +x /usr/bin/ffmpeg \
+    && chmod +x /usr/bin/ffprobe \
+    && rm -rf /tmp/ffmpeg.tar.xz /tmp/ffmpeg-*-amd64-static/
 
-# Volta para o usuário padrão do n8n (importante para segurança e permissões do app)
+# Volta para o usuário padrão do n8n (segurança)
 USER node
